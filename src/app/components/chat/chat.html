@@ -1,0 +1,72 @@
+<div class="card shadow-lg border-0 sticky-top" style="top: 20px;">
+  <div class="card-header bg-dark text-white d-flex align-items-center">
+    <i class="bi bi-robot text-info fs-4 me-2"></i>
+    <h5 class="mb-0">Asistente Pedagógico de IA (SENIAT)</h5>
+  </div>
+  
+  <!-- Cuerpo del chat con scroll -->
+  <div class="card-body bg-light" style="height: 250px; overflow-y: auto;">
+    <div *ngFor="let msg of mensajes" class="d-flex mb-3" [ngClass]="{'justify-content-end': msg.remitente === 'usuario'}">
+      <div class="p-3 rounded shadow-sm border" [ngClass]="{'bg-white text-dark': msg.remitente === 'ia', 'bg-primary text-white': msg.remitente === 'usuario'}" style="max-width: 75%;">
+        <strong *ngIf="msg.remitente === 'ia'">Asistente IA:</strong>
+        <strong *ngIf="msg.remitente === 'usuario'">Tú:</strong>
+        <p class="mb-0 mt-1">{{ msg.texto }}</p>
+      </div>
+    </div>
+
+    <!-- 👇 INDICADOR DE PENSANDO DENTRO DEL SCROLL DEL CHAT -->
+    <div *ngIf="estaEscribiendo" class="d-flex mb-3">
+      <div class="p-3 rounded shadow-sm border bg-white text-dark" style="max-width: 75%;">
+        <strong>Asistente IA:</strong>
+        <div class="d-flex align-items-center gap-2 mt-1">
+          <span class="text-muted fst-italic" style="font-size: 13px;">Pensando respuesta fiscal</span>
+          <div class="puntos-animados">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 6 Sugerencias rápidas basadas en la normativa SENIAT -->
+  <div class="p-2 bg-light border-top">
+    <div class="d-flex flex-wrap gap-1 mb-2">
+      <button class="btn btn-sm btn-outline-primary rounded-pill" (click)="usarSugerencia('¿Qué es un desgravamen?')">
+        💡 Desgravámenes
+      </button>
+      <button class="btn btn-sm btn-outline-primary rounded-pill" (click)="usarSugerencia('¿Cuáles son las tarifas?')">
+        📊 Tarifas y Tramos
+      </button>
+      <button class="btn btn-sm btn-outline-primary rounded-pill" (click)="usarSugerencia('¿Cuál es el plazo para declarar?')">
+        📅 Plazos y Fechas
+      </button>
+      <button class="btn btn-sm btn-outline-primary rounded-pill" (click)="usarSugerencia('¿Qué son las rebajas por cargas familiares?')">
+        👨‍👩‍👧 Cargas Familiares
+      </button>
+      <button class="btn btn-sm btn-outline-primary rounded-pill" (click)="usarSugerencia('¿Qué son las exenciones?')">
+        ⚖️ Exenciones
+      </button>
+      <button class="btn btn-sm btn-outline-primary rounded-pill" (click)="usarSugerencia('¿Qué es el enriquecimiento neto y el ejercicio fiscal?')">
+        📈 Enriquecimiento y Ejercicio
+      </button>
+    </div>
+
+    <!-- Botón de simulación práctica integrado de forma limpia -->
+    <div class="mb-2">
+      <button class="btn btn-sm btn-outline-success rounded-pill w-100" (click)="usarSugerencia('Hazme una simulación')">
+        <i class="bi bi-cpu-fill"></i> Simulación Práctica (Artículo 52 ISLR)
+      </button>
+    </div>
+  </div>
+
+  <div class="card-footer bg-white p-3">
+    <div class="input-group">
+      <input type="text" class="form-control" [(ngModel)]="mensajeUsuario" (keyup.enter)="enviarMensaje()" placeholder="Escribe tu consulta fiscal aquí...">
+      <button class="btn btn-primary" type="button" (click)="enviarMensaje()">
+        <i class="bi bi-send-fill"></i> Enviar
+      </button>
+    </div>
+  </div>
+</div>
